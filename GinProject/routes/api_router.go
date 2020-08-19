@@ -7,8 +7,10 @@ import (
 
 func RegisterApiRouter(router *gin.Engine) {
 
-	apiRouter := router.Group("api")
+	userRouter := router.Group("api")
 	{
-		apiRouter.GET("user/getUserInfo", controller.GetUserInfo)
+		userRouter.GET("user/getUserInfo", controller.GetUserInfo)
+		userRouter.POST("user/createUser", controller.CreateUser)
 	}
+
 }
