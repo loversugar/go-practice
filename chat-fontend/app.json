@@ -1,0 +1,31 @@
+{
+  "pages":[
+    "pages/friendsList/friendsList",
+    "pages/mine/mine"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#12b7f5",
+    "navigationBarTitleText": "好友列表",
+    "navigationBarTextStyle":"white"
+  },
+  "tabBar": {
+    "selectedColor": "#12b7f5",
+    "list": [
+      {
+        "pagePath": "pages/friendsList/friendsList",
+        "text": "好友",
+        "iconPath": "images/chat.png",
+        "selectedIconPath": "images/chat1.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/mine.png",
+        "selectedIconPath": "images/mine1.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
