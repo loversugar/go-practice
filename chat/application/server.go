@@ -8,9 +8,23 @@ import (
 	"net/http"
 )
 
+type Message struct {
+	Name string `json:"name"`
+	Password string `json:"password"`
+}
+
+// define a channel
+var channel = make(chan Message)
+
+var clients = make(map[*websocket.Conn]bool)
+
 var addr = flag.String("addr", "localhost:8080", "http service address")
 
-var upgrader = websocket.Upgrader{}
+var upgrader = websocket.Upgrader{
+	CheckOrigin: func(r *http.Request) bool {
+		return true
+	},
+}
 
 func echo(w http.ResponseWriter, r *http.Request) {
 	c, err := upgrader.Upgrade(w, r, nil)
@@ -24,16 +38,33 @@ func echo(w http.ResponseWriter, r *http.Request) {
 		c.Close()
 	}()
 
+	// Register new Client
+	clients[c] = true
+
 	for {
-		mt, message, err := c.ReadMessage()
+		var message Message
+		err := c.ReadJSON(&message)
 		if err != nil {
 			log.Println("read:", err)
 			break
 		}
-		log.Printf("recv: %s", message)
-		err = c.WriteMessage(mt, message)
-		if err != nil {
-			log.Println("write", err)
+
+		channel <- message
+	}
+}
+
+func handleMessage() {
+	log.Println("handleMessage")
+
+	for {
+		message := <-channel
+		for conn, value := range clients {
+			log.Println("index: %s", value)
+			err := conn.WriteJSON(message)
+
+			if err != nil {
+				log.Fatal("failed")
+			}
 		}
 	}
 }
@@ -45,6 +76,10 @@ func home(w http.ResponseWriter, r *http.Request) {
 func main()  {
 	flag.Parse()
 	log.SetFlags(0)
+
+	// deal with data
+	go handleMessage()
+
 	http.HandleFunc("/echo", echo)
 	http.HandleFunc("/", home)
 	log.Fatal(http.ListenAndServe(*addr, nil))
