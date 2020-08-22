@@ -1,0 +1,46 @@
+page {
+    background-color: #f1f1f1;
+}
+
+.chat {
+    background-color: #fff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 150rpx;
+}
+
+.profile {
+    margin: 20rpx;
+    height: 90rpx;
+    width: 90rpx;
+    border-radius: 50rpx;
+}
+
+.info {
+    flex: 1;
+    overflow: hidden;
+}
+
+.info-top {
+    display: flex;
+}
+
+.name {
+    color: #333;
+    flex: 1;
+}
+.date {
+    color: #999999;
+    margin-right: 30rpx;
+    font-size: 20rpx;
+}
+
+.info-bottom {
+    color: #999999;
+    font-size: 25rpx;
+    margin-right: 20rpx;
+    overflow: hidden;
+    height: 30rpx;
+    margin-top: 10rpx;
+}

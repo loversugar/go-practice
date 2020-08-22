@@ -1,0 +1,17 @@
+<view class="chat">
+	<image class="profile" src="{{chatInfo.profile}}" />
+	<view class="info">
+		<view class="info-top">
+			<view class="name">
+				{{chatInfo.name}}
+			</view>
+			<view class="date">
+				{{chatInfo.date}}
+			</view>
+		</view>
+		<view class="info-bottom">
+			{{chatInfo.content}}
+		</view>
+	</view>
+</view>
+

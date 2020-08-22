@@ -1,2 +1,6 @@
-<!--pages/friendsList/friendsList.wxml-->
-<text>pages/friendsList/friendsList.wxml</text>
+<scroll-view scroll-y="true">
+	<block wx:for="{{chatList}}" wx:key="id">
+		<friend-chat class="friend-chat" chatInfo="{{item}}" />
+	</block>
+</scroll-view>
+

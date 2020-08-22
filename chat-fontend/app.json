@@ -10,6 +10,7 @@
     "navigationBarTextStyle":"white"
   },
   "tabBar": {
+    "backgroundColor": "#f1f1f1",
     "selectedColor": "#12b7f5",
     "list": [
       {

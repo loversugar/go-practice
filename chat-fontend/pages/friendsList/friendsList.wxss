@@ -1,1 +1,6 @@
 /* pages/friendsList/friendsList.wxss */
+
+
+.friend-chat {
+    margin-top: 5rpx;
+}
