@@ -60,6 +60,7 @@ func handleMessage() {
 		message := <-channel
 		for conn, value := range clients {
 			log.Println("index: %s", value)
+			log.Println("maessage: %s", message)
 			err := conn.WriteJSON(message)
 
 			if err != nil {

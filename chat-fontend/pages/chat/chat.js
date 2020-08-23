@@ -14,13 +14,30 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this._changeNavigationBarTitle(options.name); 
+    this._connectSocket();
+  },
+
+  _changeNavigationBarTitle(name) {
     wx.setNavigationBarTitle({
-      title: options.name,
-      success: (result)=>{
-        
-      },
-      fail: ()=>{},
-      complete: ()=>{}
+      title: name
+    })
+  },
+
+  _connectSocket() {
+    var sockTask = wx.connectSocket({
+      url: 'ws://localhost:8080/echo'
+    });
+    sockTask.onOpen(result => {
+      console.log(result); 
+
+      sockTask.send({
+        data: JSON.stringify({"name": "zs", "password": "pwd"}),
+        success: (result)=>{
+        },
+        fail: ()=>{},
+        complete: ()=>{}
+      });
     });
   },
 
