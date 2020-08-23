@@ -1,0 +1,26 @@
+/* pages/chat/chat.wxss */
+.inputRoom {
+    width: 100%;
+    border-top: 1px solid #cdcdcd;
+    background-color: #f1f1f1;
+    position: fixed;
+    height: 16vw;
+    padding: 20rpx;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+input {
+    width: inherit;
+    height: 9.33vw;
+    background-color: #fff;
+    border-radius: 40rpx;
+    margin-left: 2vw;
+    margin-right: 2vw;
+    margin-bottom: 20rpx;
+    padding: 0 3vw;
+    font-size: 28rpx;
+    color: #444;
+}

@@ -1,0 +1,14 @@
+<view>
+	<view class="inputRoom" style="bottom: {{inputBottom}}px">
+		<input
+		 type="text"
+		 value="{{inputVal}}"
+		 confirm-type="发送"
+		 bindconfirm="sendClick"
+		 adjust-position="false"
+		 bindfocus="focus"
+		 bindblur="blur"
+		/>
+	</view>
+</view>
+

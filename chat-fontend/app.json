@@ -1,12 +1,13 @@
 {
   "pages":[
     "pages/friendsList/friendsList",
-    "pages/mine/mine"
+    "pages/mine/mine",
+    "pages/chat/chat"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#12b7f5",
-    "navigationBarTitleText": "好友列表",
+    "navigationBarTitleText": "消息",
     "navigationBarTextStyle":"white"
   },
   "tabBar": {

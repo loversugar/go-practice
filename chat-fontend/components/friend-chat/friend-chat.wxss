@@ -8,6 +8,11 @@ page {
     flex-direction: row;
     align-items: center;
     height: 150rpx;
+    margin-top: 10rpx;
+}
+
+.chat-change {
+    background-color: #f1f1f1;
 }
 
 .profile {

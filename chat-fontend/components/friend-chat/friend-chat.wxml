@@ -1,4 +1,9 @@
-<view class="chat">
+<view
+ bind:tap="onNavigateToChat"
+ bind:touchstart="onTouchStart"
+ bind:touchend="onTouchEnd"
+ class="chat {{isTouchChange? 'chat-change': ''}}"
+>
 	<image class="profile" src="{{chatInfo.profile}}" />
 	<view class="info">
 		<view class="info-top">

@@ -34,13 +34,35 @@
 			"current": -1,
 			"list": []
 		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
 		"game": {
 			"currentL": -1,
 			"list": []
 		},
-		"miniprogram": {
+		"gamePlugin": {
 			"current": -1,
 			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": [
+				{
+					"id": -1,
+					"name": "pages/friendsList/friendsList",
+					"pathName": "pages/chat/chat?friendId=1&name=Totti",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/chat/chat",
+					"pathName": "pages/chat/chat",
+					"scene": null
+				}
+			]
 		}
 	}
 }
