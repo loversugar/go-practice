@@ -1,4 +1,37 @@
 <view>
+	<scroll-view scroll-y>
+		<!-- <view class='scrollMsg'> -->
+		<block wx:key wx:for='{{messageArray}}' wx:for-index="index">
+
+			<!-- 单个消息1 客服发出（左） -->
+			<view wx:if='{{item.speaker=="server"}}' id='msg-{{index}}' style='display: flex; padding: 2vw 11vw 2vw 2vw;'>
+				<view style='width: 11vw; height: 11vw;'>
+					<image style='width: 11vw; height: 11vw; border-radius: 10rpx;' src='../../images/contact_member.png' />
+				</view>
+				<!-- <view style='width: 4vw; height: 11vw; margin-left: 0.5vw; display: flex; align-items: center; z-index: 9;'>
+					<image style='width: 4vw;' src='../../images/left_msg.png' mode='widthFix' />
+				</view> -->
+				<view class='leftMsg'>{{item.name}}</view>
+			</view>
+
+			<!-- 单个消息2 用户发出（右） -->
+			<view wx:else id='msg-{{index}}' style='display: flex; justify-content: flex-end; padding: 2vw 2vw 2vw 11vw;'>
+				<view class='rightMsg'>{{item.name}}</view>
+				<view style='width: 4vw; height: 11vw; margin-right: 0.5vw; display: flex; align-items: center; z-index: 9;'>
+					<image style='width: 4vw;' src='../../images/right_msg.png' mode='widthFix' />
+				</view>
+				<view style='width: 11vw; height: 11vw;'>
+					<image style='width: 10vw; height: 10vw; border-radius: 50rpx;' src='/images/image1.jpeg' />
+				</view>
+			</view>
+
+		</block>
+		<!-- </view> -->
+
+		<!-- 占位 -->
+		<view style='width: 100%; height: 18vw;' />
+	</scroll-view>
+
 	<view class="inputRoom" style="bottom: {{inputBottom}}px">
 		<input
 		 type="text"
@@ -9,6 +42,12 @@
 		 bindfocus="focus"
 		 bindblur="blur"
 		/>
+		<button class="send" type="primary" bindtap="openConnect">
+			open
+		</button>
+		<button class="send" type="primary" bindtap="sendMessage">
+			send
+		</button>
 	</view>
 </view>
 

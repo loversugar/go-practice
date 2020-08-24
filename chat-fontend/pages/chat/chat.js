@@ -1,13 +1,16 @@
 // pages/chat/chat.js
 var inputVal = '';
 var keyHeight = 0;
+var sockTask = {};
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    inputBottom: 0
+    inputBottom: 0,
+    inputVal: '',
+    messageArray: [{"name": "message", "password": "hah"}]
   },
 
   /**
@@ -15,7 +18,20 @@ Page({
    */
   onLoad: function (options) {
     this._changeNavigationBarTitle(options.name); 
+    // this._connectSocket();
+    // sockTask.onMessage(result => {
+    //   console.log(result) 
+    // });
+  },
+
+  openConnect() {
     this._connectSocket();
+    sockTask.onMessage(result => {
+      this.setData({
+        messageArray: this.data.messageArray.concat(JSON.parse(result.data))
+      })
+      console.log(this.data.messageArray);
+    });
   },
 
   _changeNavigationBarTitle(name) {
@@ -25,19 +41,11 @@ Page({
   },
 
   _connectSocket() {
-    var sockTask = wx.connectSocket({
+    sockTask = wx.connectSocket({
       url: 'ws://localhost:8080/echo'
     });
     sockTask.onOpen(result => {
       console.log(result); 
-
-      sockTask.send({
-        data: JSON.stringify({"name": "zs", "password": "pwd"}),
-        success: (result)=>{
-        },
-        fail: ()=>{},
-        complete: ()=>{}
-      });
     });
   },
 
@@ -48,7 +56,6 @@ Page({
     this.setData({
       inputBottom: keyHeight
     })
-
   },
 
   //失去聚焦(软键盘消失)
@@ -56,6 +63,16 @@ Page({
     this.setData({
       inputBottom: 0
     })
+  },
+
+  sendMessage: function() {
+    sockTask.send({
+      data: JSON.stringify({name: "zs", password: "pwd"}),
+      success: (result)=>{
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
   },
 
   /**
