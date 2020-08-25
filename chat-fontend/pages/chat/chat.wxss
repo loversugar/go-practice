@@ -34,22 +34,42 @@ input {
 
 .leftMsg {
   font-size: 35rpx;
-  color: #444;
   line-height: 7vw;
   padding: 2vw 2.5vw;
-  background-color: #fff;
-  margin-left: -1.6vw;
+  background-color: #96EB6A;
   border-radius: 10rpx;
-  z-index: 10;
+  margin-left: 20rpx;
+}
+
+.leftMsg::before {
+  content: '';
+  position: relative;
+  top: -19rpx;
+  right: 48rpx;
+  width: 8rpx;  
+  height: 8rpx;
+  border: solid 8px;
+  border-color: transparent #96EB6A transparent transparent;
+  font-size: 0;
 }
 
 .rightMsg {
   font-size: 35rpx;
-  color: #444;
   line-height: 7vw;
   padding: 2vw 2.5vw;
   background-color: #96EB6A;
-  margin-right: -1.6vw;
   border-radius: 10rpx;
-  z-index: 10;
+  margin-right: 20rpx;
+}
+
+.rightMsg::after {
+  content: '';
+  position: relative;
+  top: -19rpx;
+  left: 48rpx;
+  width: 8rpx;  
+  height: 8rpx;
+  border:solid 8px;
+  border-color: transparent transparent transparent #96EB6A;
+  font-size: 0;
 }
