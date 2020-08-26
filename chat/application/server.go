@@ -38,7 +38,7 @@ func echo(w http.ResponseWriter, r *http.Request) {
 		c.Close()
 	}()
 
-	// Register new Client
+	// Register new Clients
 	clients[c] = true
 
 	for {
