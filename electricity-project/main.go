@@ -1,11 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"go-practice/electricity-project/rabbitmq"
+	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/mvc"
+	"go-practice/electricity-project/web/controllers"
 )
 
 func main()  {
-	rabbitmq := rabbitmq.NewRabbitMQSimple("test")
-	fmt.Sprintf(rabbitmq.Mqurl)
+	app := iris.New()
+	app.Logger().SetLevel("debug")
+	app.RegisterView(iris.HTML("./web/views", ".html"))
+
+	// 注册控制器
+	mvc.New(app.Party("/hello")).Handle(new(controllers.MovieController))
+
+	app.Run(iris.Addr("localhost:8080"))
+
 }
