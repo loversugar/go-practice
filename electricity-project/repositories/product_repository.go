@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"fmt"
 	"go-practice/electricity-project/common"
 	"go-practice/electricity-project/datamodels"
 	"strconv"
@@ -19,56 +20,55 @@ type IProduct interface {
 	SelectAll() ([]*datamodels.Product, error)
 }
 
-type ProductMananger struct {
-	table string
-	mysqlConn *sql.DB
+type ProductManager struct {
+	Table string
+	MysqlConn *sql.DB
 }
 
 func NewProductManager(table string, db *sql.DB) IProduct {
-	return &ProductMananger{table:table, mysqlConn:db}
+	return &ProductManager{Table:table, MysqlConn:db}
 }
 
-func (p *ProductMananger) Conn() (err error) {
-	if p.Conn() == nil {
+func (p *ProductManager) Conn() (err error) {
+	if p.MysqlConn == nil {
 		mysql, err := common.NewMysqlConn()
 		if err != nil {
 			return err
 		}
-		p.mysqlConn = mysql
+		p.MysqlConn = mysql
 	}
 
-	if p.table == "" {
-		p.table = "product"
+	if p.Table == "" {
+		p.Table = "product"
 	}
 	return
 }
 
-// 插入
-func (p *ProductMananger) Insert(product *datamodels.Product) (productId int64, err error) {
-	if err := p.Conn(); err != nil {
+func (p *ProductManager) Insert(product *datamodels.Product) (id int64, err error) {
+	//判断连接是否存在
+	if err = p.Conn(); err != nil {
 		return 0, err
 	}
-	sql := "insert product set productName=?, productNum=?,productImage=?,productUrl=?"
-	stmt, errSql := p.mysqlConn.Prepare(sql)
-	if errSql != nil {
-		return 0, errSql
+	//准备sql
+	sql := fmt.Sprintf("INSERT %s SET productName=?,productNum=?,productImage=?,productUrl=?", p.Table)
+	if stmt, err := p.MysqlConn.Prepare(sql); err != nil {
+		return 0, err
+	} else if result, err := stmt.Exec(product.ProductName, product.ProductNum, product.ProductImage, product.ProductUrl); err != nil {
+		return 0, err
+	} else {
+		//defer stmt.Close()
+		return result.LastInsertId()
 	}
 
-	result, errStmt := stmt.Exec(product.ProductName, product.ProductNum, product.ProductImage, product.ProductUrl)
-	if errStmt != nil {
-		return 0, errStmt
-	}
-
-	return result.LastInsertId()
 }
 
-func (p *ProductMananger) Delete(productId int64) bool {
+func (p *ProductManager) Delete(productId int64) bool {
 	if err := p.Conn(); err != nil {
 		return false
 	}
 
 	sql := "delete from product where ID = ?"
-	stmt, err := p.mysqlConn.Prepare(sql)
+	stmt, err := p.MysqlConn.Prepare(sql)
 	if err != nil {
 		return false
 	}
@@ -82,13 +82,13 @@ func (p *ProductMananger) Delete(productId int64) bool {
 	return true
 }
 
-func (p *ProductMananger) Update(product *datamodels.Product) error {
+func (p *ProductManager) Update(product *datamodels.Product) error {
 	if err := p.Conn(); err != nil{
 		return err
 	}
 
 	sql := "update product set productName=?, productNum=?, productImage=?, productUrl=? where ID" + strconv.FormatInt(product.ID, 10)
-	stmt, err := p.mysqlConn.Prepare(sql)
+	stmt, err := p.MysqlConn.Prepare(sql)
 	if err != nil {
 		return err
 	}
@@ -101,13 +101,13 @@ func (p *ProductMananger) Update(product *datamodels.Product) error {
 	return nil
 }
 
-func (p *ProductMananger) SelectByKey(productId int64) (product *datamodels.Product, err error)  {
+func (p *ProductManager) SelectByKey(productId int64) (product *datamodels.Product, err error)  {
 	if err := p.Conn(); err != nil {
 		return &datamodels.Product{}, err
 	}
 
 	sql := "select * from product where ID = ?"
-	rows, err := p.mysqlConn.Query(sql, strconv.FormatInt(productId, 10))
+	rows, err := p.MysqlConn.Query(sql, strconv.FormatInt(productId, 10))
 	defer rows.Close()
 	if err != nil {
 		return
@@ -121,13 +121,13 @@ func (p *ProductMananger) SelectByKey(productId int64) (product *datamodels.Prod
 	return
 }
 
-func (p *ProductMananger) SelectAll()(products []*datamodels.Product, err error) {
+func (p *ProductManager) SelectAll()(products []*datamodels.Product, err error) {
 	if err := p.Conn(); err != nil {
 		return nil, err
 	}
 
 	sql := "select * from product"
-	rows, err := p.mysqlConn.Query(sql)
+	rows, err := p.MysqlConn.Query(sql)
 
 	defer rows.Close()
 	if err != nil {

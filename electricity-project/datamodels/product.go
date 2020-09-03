@@ -2,8 +2,8 @@ package datamodels
 
 type Product struct {
 	ID           int64  `json:"id" sql:"ID" imooc:"id"`
-	ProductName  string `json:"ProductName" sql:"productName" imooc:"ProductName"`
-	ProductNum   int64  `json:"ProductNum" sql:"productNum" imooc:"ProductNum"`
-	ProductImage string `json:"ProductImage" sql:"productImage" imooc:"ProductImage"`
-	ProductUrl   string `json:"ProductUrl" sql:"productUrl" imooc:"ProductUrl"`
+	ProductName  string `json:"ProductName" sql:"ProductName" imooc:"ProductName"`
+	ProductNum   int64  `json:"ProductNum" sql:"ProductNum" imooc:"ProductNum"`
+	ProductImage string `json:"ProductImage" sql:"ProductImage" imooc:"ProductImage"`
+	ProductUrl   string `json:"ProductUrl" sql:"ProductUrl" imooc:"ProductUrl"`
 }

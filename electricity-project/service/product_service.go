@@ -1,6 +1,7 @@
 package service
 
 import (
+	"database/sql"
 	"go-practice/electricity-project/datamodels"
 	"go-practice/electricity-project/repositories"
 )
@@ -21,8 +22,8 @@ type ProductService struct {
 	productRepository repositories.IProduct
 }
 
-func NewProductServcice(repo repositories.IProduct) IProductService {
-	return &ProductService{productRepository:repo}
+func NewProductService(db *sql.DB) IProductService {
+	return &ProductService{productRepository:repositories.NewProductManager("product", db)}
 }
 
 func (p *ProductService) GetProductById(productId int64)(*datamodels.Product, error) {
