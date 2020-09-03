@@ -9,10 +9,10 @@ import (
 func main()  {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
-	app.RegisterView(iris.HTML("./backend/web/views", ".html").Layout("shared/layout.html").Reload(true))
+	app.RegisterView(iris.HTML("./web/views", ".html").Layout("shared/layout.html").Reload(true))
 
 	// 设置模版目录
-	app.HandleDir("/assets", "./backend/web/assets")
+	app.HandleDir("/assets", iris.Dir("./web/assets"))
 
 	// 出现异常跳转到指定页面
 	app.OnAnyErrorCode(func(context iris.Context) {

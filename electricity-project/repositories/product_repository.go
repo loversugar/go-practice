@@ -46,7 +46,7 @@ func (p *ProductMananger) Conn() (err error) {
 // 插入
 func (p *ProductMananger) Insert(product *datamodels.Product) (productId int64, err error) {
 	if err := p.Conn(); err != nil {
-		return
+		return 0, err
 	}
 	sql := "insert product set productName=?, productNum=?,productImage=?,productUrl=?"
 	stmt, errSql := p.mysqlConn.Prepare(sql)
@@ -103,7 +103,7 @@ func (p *ProductMananger) Update(product *datamodels.Product) error {
 
 func (p *ProductMananger) SelectByKey(productId int64) (product *datamodels.Product, err error)  {
 	if err := p.Conn(); err != nil {
-		return
+		return &datamodels.Product{}, err
 	}
 
 	sql := "select * from product where ID = ?"
@@ -123,7 +123,7 @@ func (p *ProductMananger) SelectByKey(productId int64) (product *datamodels.Prod
 
 func (p *ProductMananger) SelectAll()(products []*datamodels.Product, err error) {
 	if err := p.Conn(); err != nil {
-		return
+		return nil, err
 	}
 
 	sql := "select * from product"
