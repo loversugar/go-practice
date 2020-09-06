@@ -9,7 +9,7 @@ import (
 	"go-practice/electricity-project/service"
 )
 
-func main()  {
+func main() {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 	app.RegisterView(iris.HTML("./backend/web/views", ".html").Layout("shared/layout.html").Reload(true))
@@ -39,10 +39,15 @@ func main()  {
 	product.Register(ctx, productServiceImp)
 	product.Handle(new(controllers.ProductController))
 
+	orderServiceImp := service.NewOrderService(db)
+	orderParty := app.Party("/order")
+	order := mvc.New(orderParty)
+	order.Register(ctx, orderServiceImp)
+	order.Handle(new(controllers.OrderController))
 
 	// 注册控制器
 	mvc.New(app.Party("/hello")).Handle(new(controllers.MovieController))
 
-	app.Run(iris.Addr("localhost:8080"))
+	app.Run(iris.Addr("localhost:8088"))
 
 }

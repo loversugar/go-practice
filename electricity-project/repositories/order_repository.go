@@ -29,7 +29,7 @@ func (o *OrderManagerRepository) Conn() (err error) {
 	if o.mysqlConn == nil {
 		mysql, err := common.NewMysqlConn()
 		if err != nil {
-			return
+			return err
 		}
 
 		o.mysqlConn = mysql
@@ -39,11 +39,11 @@ func (o *OrderManagerRepository) Conn() (err error) {
 }
 
 func (o *OrderManagerRepository) Insert(order *datamodels.Order) (productId int64, err error) {
-	if err := o.Conn(); err != nil {
+	if err = o.Conn(); err != nil {
 		return
 	}
 
-	sql := "insert order set userId = ? , productId = ?, orderStatus = ?"
+	sql := "insert `order` set userId = ? , productId = ?, orderStatus = ?"
 	stmt, err := o.mysqlConn.Prepare(sql)
 	if err != nil {
 		return
@@ -57,18 +57,18 @@ func (o *OrderManagerRepository) Insert(order *datamodels.Order) (productId int6
 	return result.LastInsertId()
 }
 
-func (o *OrderManagerRepository) Delete(productId int64) bool {
+func (o *OrderManagerRepository) Delete(orderId int64) bool {
 	if err := o.Conn(); err != nil {
 		return false
 	}
 
-	sql := "delete from " + o.table + " where productId = ?"
+	sql := "delete from `" + o.table + "` where ID = ?"
 	stmt, err := o.mysqlConn.Prepare(sql)
 	if err != nil {
 		return false
 	}
 
-	_, err = stmt.Exec(productId)
+	_, err = stmt.Exec(orderId)
 
 	if err != nil {
 		return false
@@ -78,11 +78,11 @@ func (o *OrderManagerRepository) Delete(productId int64) bool {
 }
 
 func (o *OrderManagerRepository) Update(order *datamodels.Order) (err error) {
-	if err := o.Conn(); err != nil {
+	if err = o.Conn(); err != nil {
 		return
 	}
 
-	sql := "update " + o.table + " set userId = ?, productId = ?, orderStatus = ? where productId = ?"
+	sql := "update `" + o.table + "` set userId = ?, productId = ?, orderStatus = ? where productId = ?"
 	stmt, err := o.mysqlConn.Prepare(sql)
 	if err != nil {
 		return
@@ -96,7 +96,7 @@ func (o *OrderManagerRepository) Update(order *datamodels.Order) (err error) {
 }
 
 func (o *OrderManagerRepository) SelectByKey(id int64) (order *datamodels.Order, err error) {
-	if err := o.Conn(); err != nil {
+	if err = o.Conn(); err != nil {
 		return
 	}
 
@@ -117,11 +117,11 @@ func (o *OrderManagerRepository) SelectByKey(id int64) (order *datamodels.Order,
 }
 
 func (o *OrderManagerRepository) SelectAll() (orders []*datamodels.Order, err error) {
-	if err := o.Conn(); err != nil {
+	if err = o.Conn(); err != nil {
 		return
 	}
 
-	sql := "select * from " + o.table
+	sql := "select * from `" + o.table + "`"
 	rows, err := o.mysqlConn.Query(sql)
 	defer rows.Close()
 	if err != nil {
@@ -143,5 +143,20 @@ func (o *OrderManagerRepository) SelectAll() (orders []*datamodels.Order, err er
 }
 
 func (o *OrderManagerRepository) SelectAllWithInfo() (orders map[int]map[string]string, err error) {
-	panic("implement me")
+	if err = o.Conn(); err != nil {
+		return
+	}
+
+	sql := "select o.ID, p.productName, o.orderStatus from `order` as o left join product as p on o.productId=p.ID"
+	rows, err := o.mysqlConn.Query(sql)
+	if err != nil {
+		return
+	}
+
+	results := common.GetResultRows(rows)
+	if len(results) <= 0 {
+		return nil, nil
+	}
+
+	return results, nil
 }

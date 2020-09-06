@@ -8,16 +8,16 @@ import (
 
 //创建mysql 连接
 func NewMysqlConn() (db *sql.DB, err error) {
-	db, err = sql.Open("mysql", "root:root@tcp(106.14.xx.xx:3306)/imooc?charset=utf8")
+	db, err = sql.Open("mysql", "root:root@tcp(106.14.5.37:3306)/imooc?charset=utf8")
 	return
 }
 
-func NewMySqlGormConn()(db *gorm.DB,err error)  {
-	return gorm.Open("mysql","root:root@tcp(127.0.0.1:3306)/imooc?charset=utf8&parseTime=True&loc=Local")
+func NewMySqlGormConn() (db *gorm.DB, err error) {
+	return gorm.Open("mysql", "root:root@tcp(127.0.0.1:3306)/imooc?charset=utf8&parseTime=True&loc=Local")
 }
 
 //获取返回值， 获取一条
-func GetResultRow(rows *sql.Rows) map[string]string{
+func GetResultRow(rows *sql.Rows) map[string]string {
 	columns, _ := rows.Columns()
 	scanArgs := make([]interface{}, len(columns))
 	values := make([][]byte, len(columns))
