@@ -12,21 +12,21 @@ import (
 // 第二步，实现接口
 
 type IProduct interface {
-	Conn() (error)
+	Conn() error
 	Insert(*datamodels.Product) (int64, error)
-	Delete(int64) (bool)
-	Update(product *datamodels.Product) (error)
+	Delete(int64) bool
+	Update(product *datamodels.Product) error
 	SelectByKey(int64) (*datamodels.Product, error)
 	SelectAll() ([]*datamodels.Product, error)
 }
 
 type ProductManager struct {
-	Table string
+	Table     string
 	MysqlConn *sql.DB
 }
 
 func NewProductManager(table string, db *sql.DB) IProduct {
-	return &ProductManager{Table:table, MysqlConn:db}
+	return &ProductManager{Table: table, MysqlConn: db}
 }
 
 func (p *ProductManager) Conn() (err error) {
@@ -83,11 +83,11 @@ func (p *ProductManager) Delete(productId int64) bool {
 }
 
 func (p *ProductManager) Update(product *datamodels.Product) error {
-	if err := p.Conn(); err != nil{
+	if err := p.Conn(); err != nil {
 		return err
 	}
 
-	sql := "update product set productName=?, productNum=?, productImage=?, productUrl=? where ID" + strconv.FormatInt(product.ID, 10)
+	sql := "update product set productName=?, productNum=?, productImage=?, productUrl=? where ID = " + strconv.FormatInt(product.ID, 10)
 	stmt, err := p.MysqlConn.Prepare(sql)
 	if err != nil {
 		return err
@@ -101,7 +101,7 @@ func (p *ProductManager) Update(product *datamodels.Product) error {
 	return nil
 }
 
-func (p *ProductManager) SelectByKey(productId int64) (product *datamodels.Product, err error)  {
+func (p *ProductManager) SelectByKey(productId int64) (product *datamodels.Product, err error) {
 	if err := p.Conn(); err != nil {
 		return &datamodels.Product{}, err
 	}
@@ -117,11 +117,12 @@ func (p *ProductManager) SelectByKey(productId int64) (product *datamodels.Produ
 		return &datamodels.Product{}, nil
 	}
 
+	product = &datamodels.Product{}
 	common.DataToStructByTagSql(result, product)
 	return
 }
 
-func (p *ProductManager) SelectAll()(products []*datamodels.Product, err error) {
+func (p *ProductManager) SelectAll() (products []*datamodels.Product, err error) {
 	if err := p.Conn(); err != nil {
 		return nil, err
 	}
@@ -134,7 +135,7 @@ func (p *ProductManager) SelectAll()(products []*datamodels.Product, err error) 
 		return
 	}
 	result := common.GetResultRows(rows)
-	if (len(result) == 0) {
+	if len(result) == 0 {
 		return nil, nil
 	}
 
