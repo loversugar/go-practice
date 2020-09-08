@@ -18,6 +18,8 @@ func main() {
 
 	// 设置模版目录
 	app.HandleDir("/public", iris.Dir("./frontend/web/public"))
+	// 访问生成的html静态文件
+	app.HandleDir("/html", iris.Dir("./frontend/web/generate/htmlProductOut"))
 
 	// 出现异常跳转到指定页面
 	app.OnAnyErrorCode(func(context iris.Context) {

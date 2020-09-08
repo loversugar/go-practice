@@ -40,8 +40,8 @@ func (p *ProductController) GetGenerateHtml() {
 }
 
 var (
-	htmlOutPath  = "./IrisProduct/frontend/web/generate/htmlProductOut/" //生成Html保存目录
-	templatePath = "./IrisProduct/frontend/web/views/template/"          //静态文件模板目录
+	htmlOutPath  = "./frontend/web/generate/htmlProductOut/" //生成Html保存目录
+	templatePath = "./frontend/web/views/template/"          //静态文件模板目录
 )
 
 func generateStaticHtml(ctx iris.Context, template *template.Template,
