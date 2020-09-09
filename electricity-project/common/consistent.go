@@ -21,7 +21,7 @@ func (x units) Less(i, j int) bool {
 	return x[i] < x[j]
 }
 
-//切片中连个值的交换
+//切片中两个值的交换
 func (x units) Swap(i, j int) {
 	x[i], x[j] = x[j], x[i]
 }
